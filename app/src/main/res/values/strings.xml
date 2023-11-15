@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">GameSplashScreen</string>
+    <string name="title_activity_enter_screen">EnterScreen</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="title_activity_nav">Nav</string>
 </resources>
