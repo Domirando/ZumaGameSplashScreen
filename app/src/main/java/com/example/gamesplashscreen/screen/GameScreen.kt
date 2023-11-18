@@ -14,5 +14,5 @@ import com.example.gamesplashscreen.R
 import com.example.gamesplashscreen.screen.ui.theme.GameSplashScreenTheme
 @Composable
 fun GameScreen(navController: NavController){
-
+//asdfsd
 }
