@@ -1,5 +1,6 @@
 package com.example.gamesplashscreen
 
+import android.content.Context
 import androidx.compose.animation.core.Animatable
 import android.os.Bundle
 import android.view.animation.OvershootInterpolator
@@ -41,6 +42,7 @@ class MainActivity : ComponentActivity() {
 //    https://youtu.be/c2Lf-PwZArs
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedPreferences = getSharedPreferences("prefs", Context.MODE_PRIVATE)
         setContent {
             Surface(color = Color(R.color.purple_200), modifier = Modifier.fillMaxSize()) {
                 Nav()

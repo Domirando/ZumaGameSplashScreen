@@ -48,7 +48,7 @@ fun EnterScreen(navController: NavController){
                 Text(text = "O'yindan chiqish!")
             }
             Button(onClick = {
-                navController.navigate("game_screen")
+                navController.navigate("difficulty_screen")
             }) {
                 Text(text = "O'yinni davom ettirish!")
             }
