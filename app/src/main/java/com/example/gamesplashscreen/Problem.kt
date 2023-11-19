@@ -1,3 +1,5 @@
 package com.example.gamesplashscreen
 
-data class Problem(var problem:String, var result: Double)
+import java.nio.file.OpenOption
+
+data class Problem(var problem:String, var options: LinkedHashMap<Int, String>)

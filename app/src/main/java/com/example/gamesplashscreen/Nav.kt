@@ -7,6 +7,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.gamesplashscreen.screen.DifficultyScreen
 import com.example.gamesplashscreen.screen.EnterScreen
 import com.example.gamesplashscreen.screen.GameScreen
+import com.example.gamesplashscreen.screen.ScoreScreen
 import com.example.gamesplashscreen.screen.SplashScreen
 
 
@@ -27,6 +28,9 @@ fun Nav() {
         }
         composable(route = "difficulty_screen"){
             DifficultyScreen(navController = navController)
+        }
+        composable(route = "score_screen"){
+            ScoreScreen(navController = navController)
         }
     }
 }

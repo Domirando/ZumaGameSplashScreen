@@ -76,4 +76,5 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     implementation("androidx.navigation:navigation-compose:2.4.0-alpha05")
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 }
