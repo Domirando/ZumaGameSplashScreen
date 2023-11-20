@@ -37,6 +37,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import java.util.Collections
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.gamesplashscreen.screen.TimeFormatExt.timeFormat
+import com.example.gamesplashscreen.tools.CountDownTimerViewModel
+import com.example.gamesplashscreen.tools.ProblemMaker
 
 
 @Composable
@@ -89,7 +91,7 @@ fun GameScreen(navController: NavController, level: String, viewModel: CountDown
                                 prob = ProblemMaker(level)
                                 problem.value = prob.problem
                                 options.value = prob.options
-                            } else {
+                            } else if(max_prob.value == 1 || !isPlaying.value){
                                 if (savedScore.value < score.value) {
                                     scope.launch {
                                         dataStore.saveScore(score.value)
@@ -103,7 +105,7 @@ fun GameScreen(navController: NavController, level: String, viewModel: CountDown
                                 prob = ProblemMaker(level)
                                 problem.value = prob.problem
                                 options.value = prob.options
-                            } else {
+                            } else if(max_prob.value == 1 || !isPlaying.value){
                                 if (savedScore.value < score.value) {
                                     scope.launch {
                                         dataStore.saveScore(score.value)
@@ -121,56 +123,6 @@ fun GameScreen(navController: NavController, level: String, viewModel: CountDown
     }
 }
 
-fun ProblemMaker(level: String): Problem {
-    var ishoralar = mutableListOf<String>("+", "-", "*", "/")
-    var ishora = ishoralar.random()
-    var result:Float = 0f
-    var problem = ""
-    val options = LinkedHashMap<Int, String>()
-    var numbers = NumberRandomizer(level)
-    when(ishora) {
-        "+" -> {
-            problem = "${numbers.get(0)} + ${numbers.get(1)}"
-            result = (numbers.get(0) + numbers.get(1)).toFloat()
-        }
-        "-" -> {
-            problem = "${numbers.get(0)} - ${numbers.get(1)}"
-            result = (numbers.get(0) - numbers.get(1)).toFloat()
-        }
-        "*" -> {
-            problem = "${numbers.get(0)} * ${numbers.get(1)}"
-            result = (numbers.get(0) * numbers.get(1)).toFloat()
-        }
-        "/" -> {
-            problem = "${numbers.get(0)} / ${numbers.get(1)}"
-            result = (numbers.get(0).toFloat() / numbers.get(1)).toFloat()
-            if(result.toString().length > 3){
-                result = result.toString().substring(0, 4).toFloat()
-            }
-        }
-    }
-    options[0] = result.toString()
-    for (i in 1..3){
-        options[i] = NumberRandomizer(level)[0].toFloat().toString()
-    }
-    val list = options.toList()
-
-    // Shuffle the list
-    Collections.shuffle(list)
-
-    // Create a new LinkedHashMap from the shuffled list
-    val shuffledMap = linkedMapOf(*list.toTypedArray())
-    return Problem(problem, shuffledMap)
-}
-fun NumberRandomizer(level:String):List<Int>{
-    if (level == "easy"){
-        return  List(2) { Random.nextInt(1, 30) }
-    } else if (level == "medium"){
-        return  List(2) { Random.nextInt(40, 80) }
-    } else {
-        return  List(2) { Random.nextInt(90, 300) }
-    }
-}
 
 object TimeFormatExt {
     private const val FORMAT = "%02d:%02d"
@@ -182,47 +134,3 @@ object TimeFormatExt {
     )
 }
 
-class CountDownTimerViewModel() : ViewModel() {
-
-    private var countDownTimer: CountDownTimer? = null
-
-    private val userInputMinutes = TimeUnit.MINUTES.toMillis(1)
-    private val userInputSecond = TimeUnit.SECONDS.toMillis(60)
-
-    val initialTotalTimeInMillis = userInputMinutes+userInputSecond
-    var timeLeft = mutableStateOf(initialTotalTimeInMillis)
-    val countDownInterval = 1000L // 1 seconds is the lowest
-
-    val timerText = mutableStateOf(timeLeft.value.timeFormat())
-
-    val isPlaying = mutableStateOf(false)
-
-    fun startCountDownTimer(navController: NavController) = viewModelScope.launch {
-        isPlaying.value = true
-        countDownTimer = object : CountDownTimer(timeLeft.value, countDownInterval) {
-            override fun onTick(currentTimeLeft: Long) {
-                timerText.value = currentTimeLeft.timeFormat()
-                timeLeft.value = currentTimeLeft
-            }
-
-            override fun onFinish() {
-                timerText.value = initialTotalTimeInMillis.timeFormat()
-                isPlaying.value = false
-                navController.navigate("score_screen")
-
-            }
-        }.start()
-    }
-
-    fun stopCountDownTimer() = viewModelScope.launch {
-        isPlaying.value = false
-        countDownTimer?.cancel()
-    }
-
-    fun resetCountDownTimer() = viewModelScope.launch {
-        isPlaying.value = false
-        countDownTimer?.cancel()
-        timerText.value = initialTotalTimeInMillis.timeFormat()
-        timeLeft.value = initialTotalTimeInMillis
-    }
-}
