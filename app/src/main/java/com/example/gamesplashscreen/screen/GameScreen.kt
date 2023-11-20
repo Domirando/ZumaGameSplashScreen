@@ -86,12 +86,12 @@ fun GameScreen(navController: NavController, level: String, viewModel: CountDown
                     Button(modifier = Modifier.padding(0.dp, 6.dp), onClick = {
                         if (entry.key == 0) {
                             score.value += 10
-                            if (max_prob.value != 1 && isPlaying.value) {
+                            if (max_prob.value != 1) {
                                 max_prob.value--
                                 prob = ProblemMaker(level)
                                 problem.value = prob.problem
                                 options.value = prob.options
-                            } else if(max_prob.value == 1 || !isPlaying.value){
+                            } else if(max_prob.value == 1){
                                 if (savedScore.value < score.value) {
                                     scope.launch {
                                         dataStore.saveScore(score.value)
@@ -100,12 +100,12 @@ fun GameScreen(navController: NavController, level: String, viewModel: CountDown
                                 navController.navigate("score_screen")
                             }
                         } else {
-                            if (max_prob.value != 1 && isPlaying.value) {
+                            if (max_prob.value != 1) {
                                 max_prob.value--
                                 prob = ProblemMaker(level)
                                 problem.value = prob.problem
                                 options.value = prob.options
-                            } else if(max_prob.value == 1 || !isPlaying.value){
+                            } else if(max_prob.value == 1 ){
                                 if (savedScore.value < score.value) {
                                     scope.launch {
                                         dataStore.saveScore(score.value)

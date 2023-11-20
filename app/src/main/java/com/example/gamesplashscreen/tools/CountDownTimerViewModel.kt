@@ -36,7 +36,6 @@ class CountDownTimerViewModel() : ViewModel() {
                 timerText.value = initialTotalTimeInMillis.timeFormat()
                 isPlaying.value = false
                 navController.navigate("score_screen")
-
             }
         }.start()
     }
